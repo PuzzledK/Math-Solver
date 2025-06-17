@@ -10,12 +10,19 @@ enum class TokenType {
     POW,
     LBRAC,
     RBRAC,
+    SIN,
+    ASIN,
+    COS,
+    ACOS,
+    TAN,
+    ATAN,
     END
 };
 
 struct Token {
     TokenType type;
     double num;
+    std::string str = "";
 };
 
 std::string tokenTypeToString(TokenType type);

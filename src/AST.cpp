@@ -32,3 +32,18 @@ double binOpAST::evaluate() const {
             throw std::runtime_error("Invalid operator");
     }
 }
+
+mathFuncAST::mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr) : funcName(funcName), expr(std::move(expr)) {}
+
+double mathFuncAST::evaluate() const {
+    auto val = expr -> evaluate();
+
+    if(funcName == "sin") return sin(val);
+    if(funcName == "asin") return asin(val);
+    if(funcName == "cos") return cos(val);
+    if(funcName == "acos") return acos(val);
+    if(funcName == "tan") return tan(val);
+    if(funcName == "atan") return atan(val);
+
+    throw std::runtime_error("UNSUPPORTED FUNCTION");
+}

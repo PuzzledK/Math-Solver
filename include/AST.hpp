@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 
 class ASTNode {
 public:
@@ -22,4 +23,13 @@ class binOpAST : public ASTNode {
 public:
     binOpAST(std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right, char op);
     double evaluate() const override;
+};
+
+class mathFuncAST : public ASTNode {
+    std::string funcName;
+    std::unique_ptr<ASTNode> expr;
+
+    public:
+        mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr);
+        double evaluate() const override;
 };

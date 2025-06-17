@@ -20,6 +20,24 @@ Token Lexer::parseNum(char c) {
     return {TokenType::NUM, std::stod(num)};
 }
 
+Token Lexer::parseFunc(char c){
+    std::string func;
+    func += c;
+
+    while(pos < input.length() && isalpha(input[pos])){
+        func += input[pos++];
+    }
+
+    if(func == "sin")  return {TokenType::SIN,0,"sin"};
+    if(func == "cos")  return {TokenType::COS,0,"cos"};
+    if(func == "tan")  return {TokenType::TAN,0,"tan"};
+    if(func == "asin") return {TokenType::ASIN,0,"asin"};
+    if(func == "acos") return {TokenType::ACOS,0,"acos"};
+    if(func == "atan") return {TokenType::ATAN,0,"atan"};
+
+    else throw std::runtime_error("UNKNOWN FUNCTION ENTERED");
+}
+
 Token Lexer::getNextToken() {
     while (pos < input.length() && isspace(input[pos])) {
         pos++;
@@ -42,6 +60,9 @@ Token Lexer::getNextToken() {
         default:
             if (isdigit(c) || c == '.') {
                 return parseNum(c);
+            }
+            if(isalpha(c)){
+                return parseFunc(c);
             }
             throw std::runtime_error("INVALID SYNTAX");
     }
