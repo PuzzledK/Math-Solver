@@ -1,4 +1,4 @@
-# Kaleidoscope Calculator
+# Calculator
 
 ## Requirements
 - C++ compiler (e.g., g++, clang++)
