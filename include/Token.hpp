@@ -7,6 +7,7 @@ enum class TokenType {
     MINUS,
     MULT,
     DIV,
+    POW,
     LBRAC,
     RBRAC,
     END

@@ -1,6 +1,7 @@
 // AST.cpp
 #include "AST.hpp"
 #include <stdexcept>
+#include <math.h>
 
 numAST::numAST(double num) : num(num) {}
 
@@ -23,6 +24,7 @@ double binOpAST::evaluate() const {
         case '+': return l + r;
         case '-': return l - r;
         case '*': return l * r;
+        case '^': return pow(l,r);
         case '/': 
             if (r == 0) throw std::runtime_error("Division by zero");
             return l / r;

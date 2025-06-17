@@ -33,8 +33,8 @@ std::unique_ptr<ASTNode> Parser::parseExpression() {
 std::unique_ptr<ASTNode> Parser::parseMulDiv() {
     auto node = parseParenOrUnary();
 
-    while (curTok.type == TokenType::MULT || curTok.type == TokenType::DIV) {
-        char op = (curTok.type == TokenType::MULT ? '*' : '/');
+    while (curTok.type == TokenType::MULT || curTok.type == TokenType::DIV || curTok.type == TokenType::POW) {
+        char op = (curTok.type == TokenType::MULT ? '*' : (curTok.type == TokenType::DIV ? '/' : '^'));
         eat(curTok.type);
         node = std::make_unique<binOpAST>(std::move(node), parseParenOrUnary(), op);
     }
@@ -47,10 +47,12 @@ std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
         auto node = std::make_unique<numAST>(curTok.num);
         eat(TokenType::NUM);
         return node;
-    } else if (curTok.type == TokenType::MINUS) {
+    } 
+    else if (curTok.type == TokenType::MINUS) {
         eat(TokenType::MINUS);
         return std::make_unique<binOpAST>(std::make_unique<numAST>(0), parseParenOrUnary(), '-');
-    } else if (curTok.type == TokenType::LBRAC) {
+    } 
+    else if (curTok.type == TokenType::LBRAC) {
         eat(TokenType::LBRAC);
         auto node = parseExpression();
         eat(TokenType::RBRAC);

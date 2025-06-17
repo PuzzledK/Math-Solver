@@ -38,6 +38,7 @@ Token Lexer::getNextToken() {
         case '/': return {TokenType::DIV, 0};
         case '(': return {TokenType::LBRAC, 0};
         case ')': return {TokenType::RBRAC, 0};
+        case '^': return {TokenType::POW,0};
         default:
             if (isdigit(c) || c == '.') {
                 return parseNum(c);
