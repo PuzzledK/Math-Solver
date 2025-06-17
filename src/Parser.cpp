@@ -31,12 +31,25 @@ std::unique_ptr<ASTNode> Parser::parseExpression() {
 }
 
 std::unique_ptr<ASTNode> Parser::parseMulDiv() {
+    auto node = parsePow();
+
+    while (curTok.type == TokenType::MULT || curTok.type == TokenType::DIV) {
+        char op = (curTok.type == TokenType::MULT ? '*' : '/');
+        eat(curTok.type);
+        node = std::make_unique<binOpAST>(std::move(node), parsePow(), op);
+    }
+
+    return node;
+}
+
+std::unique_ptr<ASTNode> Parser::parsePow(){
     auto node = parseParenOrUnary();
 
-    while (curTok.type == TokenType::MULT || curTok.type == TokenType::DIV || curTok.type == TokenType::POW) {
-        char op = (curTok.type == TokenType::MULT ? '*' : (curTok.type == TokenType::DIV ? '/' : '^'));
+    while(curTok.type == TokenType::POW){
+        char op = '^';
         eat(curTok.type);
-        node = std::make_unique<binOpAST>(std::move(node), parseParenOrUnary(), op);
+
+        node = std::make_unique<binOpAST>(std::move(node),parseParenOrUnary(),op);
     }
 
     return node;
