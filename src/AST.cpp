@@ -51,10 +51,12 @@ double mathFuncAST::evaluate() const {
     }
 
     if(funcName == "log"){
+        if(val <= 0) throw std::runtime_error("Invalid Input");
         return log(val);
     }
 
     if(funcName == "log10"){
+        if(val <= 0) throw std::runtime_error("Invalid Input");
         return log10(val);
     }
 
