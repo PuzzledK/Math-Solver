@@ -18,6 +18,7 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::ATAN: return "ATAN";
         case TokenType::SQRT: return "SQRT";
         case TokenType::END: return "END";
-        default: return "UNKNOWN";
+		case TokenType::EXPO: return "EXPO";
+        default: return "UNKNOWN";        
     }
 }

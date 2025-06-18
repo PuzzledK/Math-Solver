@@ -1,6 +1,12 @@
 // Parser.cpp
 #include "Parser.hpp"
 #include <stdexcept>
+#include <cmath>
+
+#ifndef M_E
+#define M_E 2.71828182845904523536
+#endif 
+
 
 Parser::Parser(Lexer lex) : lexer(lex) {
     curTok = lexer.getNextToken();
@@ -60,7 +66,12 @@ std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
         auto node = std::make_unique<numAST>(curTok.num);
         eat(TokenType::NUM);
         return node;
-    } 
+    }
+    else if (curTok.type == TokenType::EXPO) {
+        auto node = std::make_unique<numAST>(M_E);
+        eat(TokenType::EXPO);
+        return node;
+    }
     else if (curTok.type == TokenType::MINUS) {
         eat(TokenType::MINUS);
         return std::make_unique<binOpAST>(std::make_unique<numAST>(0), parseParenOrUnary(), '-');

@@ -3,3 +3,5 @@ kaleidoscope.cpp
 out
 basic_math.cpp
 build
+.vs
+.vscode

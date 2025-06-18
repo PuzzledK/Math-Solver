@@ -49,6 +49,7 @@ double mathFuncAST::evaluate() const {
         }
         return sqrt(val);
     }
+
     if(funcName == "sin") return sin(val * (M_PI / 180.0));
     if(funcName == "asin") return asin(val) * (180.0 / M_PI);
 
