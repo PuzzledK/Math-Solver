@@ -48,9 +48,9 @@ double mathFuncAST::evaluate() const {
     if(funcName == "sin") return sin(val * (M_PI / 180.0));
     if(funcName == "asin") return asin(val * (M_PI / 180.0));
     if(funcName == "cos") return cos(val * (M_PI / 180.0));
-    if(funcName == "acos") return acos(val * (M_PI / 180.0));
-    if(funcName == "tan") return tan(val * (M_PI / 180.0));
-    if(funcName == "atan") return atan(val * (M_PI / 180.0));
+    if(funcName == "acos") return acos(val) * (180.0 / M_PI);
+    if(funcName == "tan") return tan(val) * (180.0 / M_PI);
+    if(funcName == "atan") return atan(val) * (180.0 / M_PI);
 
     throw std::runtime_error("UNSUPPORTED FUNCTION");
 }
