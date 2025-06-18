@@ -51,7 +51,7 @@ The calculator currently supports the following operations and functions:
 - `atan(x)`
 - `sqrt(x)`
 
-#### The input to Trigonometric functions is in degrees.
+#### The input and output to Trigonometric functions is in degrees.
 
 ### Numbers
 
