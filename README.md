@@ -43,6 +43,7 @@ The calculator currently supports the following operations and functions:
 - `asin(x)`
 - `acos(x)`
 - `atan(x)`
+The input to Trigonometric functions is in degrees.
 
 ### Numbers
 - Integer and floating-point numbers (e.g., `42`, `3.14`)
