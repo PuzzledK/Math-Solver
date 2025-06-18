@@ -22,6 +22,7 @@ int main()
             std::cout << "  /   Division\n";
             std::cout << "  ^   Exponentiation\n";
             std::cout << "  ( ) Parentheses\n";
+            std::cout << "  e (Euler's constant)\n";
             std::cout << "\nFunctions:\n";
             std::cout << "  sin(x)   Sine\n";
             std::cout << "  cos(x)   Cosine\n";

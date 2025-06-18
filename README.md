@@ -81,6 +81,7 @@ The calculator currently supports the following operations and functions:
 - Division: `/`
 - Exponentiation: `^`
 - Parentheses: `(` and `)`
+- e (Euler's Constant)
 
 ### Functions
 
