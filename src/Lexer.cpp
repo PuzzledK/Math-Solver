@@ -34,6 +34,7 @@ Token Lexer::parseFunc(char c){
     if(func == "asin") return {TokenType::ASIN,0,"asin"};
     if(func == "acos") return {TokenType::ACOS,0,"acos"};
     if(func == "atan") return {TokenType::ATAN,0,"atan"};
+    if(func == "sqrt") return {TokenType::SQRT,0,"sqrt"};
 
     else throw std::runtime_error("UNKNOWN FUNCTION ENTERED");
 }

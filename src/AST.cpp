@@ -38,14 +38,14 @@ mathFuncAST::mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr) : f
 
 double mathFuncAST::evaluate() const {
     auto val = expr -> evaluate();
-    val = val * (M_PI / 180.0);
-
-    if(funcName == "sin") return sin(val);
-    if(funcName == "asin") return asin(val);
-    if(funcName == "cos") return cos(val);
-    if(funcName == "acos") return acos(val);
-    if(funcName == "tan") return tan(val);
-    if(funcName == "atan") return atan(val);
+    
+    if(funcName == "sqrt") return sqrt(val);
+    if(funcName == "sin") return sin(val * (M_PI / 180.0));
+    if(funcName == "asin") return asin(val * (M_PI / 180.0));
+    if(funcName == "cos") return cos(val * (M_PI / 180.0));
+    if(funcName == "acos") return acos(val * (M_PI / 180.0));
+    if(funcName == "tan") return tan(val * (M_PI / 180.0));
+    if(funcName == "atan") return atan(val * (M_PI / 180.0));
 
     throw std::runtime_error("UNSUPPORTED FUNCTION");
 }

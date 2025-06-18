@@ -16,6 +16,7 @@ enum class TokenType {
     ACOS,
     TAN,
     ATAN,
+    SQRT,
     END
 };
 

@@ -1,10 +1,12 @@
 # Calculator
 
 ## Requirements
+
 - C++ compiler (e.g., g++, clang++)
 - CMake (version 3.0 or higher recommended)
 
 ## Build Instructions
+
 1. Clone or download the repository.
 2. Open a terminal and navigate to the project root directory.
 3. Run the following commands:
@@ -19,6 +21,7 @@ make
 This will generate the executable (usually named `calc`) in the `build/` directory.
 
 ## How to Run
+
 From the `build/` directory, run:
 
 ```sh
@@ -26,9 +29,11 @@ From the `build/` directory, run:
 ```
 
 ## Supported Commands / Functions
+
 The calculator currently supports the following operations and functions:
 
 ### Operators
+
 - Addition: `+`
 - Subtraction: `-`
 - Multiplication: `*`
@@ -37,18 +42,23 @@ The calculator currently supports the following operations and functions:
 - Parentheses: `(` and `)`
 
 ### Functions
+
 - `sin(x)`
 - `cos(x)`
 - `tan(x)`
 - `asin(x)`
 - `acos(x)`
 - `atan(x)`
+- `sqrt(x)`
+
 #### The input to Trigonometric functions is in degrees.
 
 ### Numbers
+
 - Integer and floating-point numbers (e.g., `42`, `3.14`)
 
 ### Example Usage
+
 ```
 sin(0.5) + cos(0.5)
 2^3 + tan(1)
