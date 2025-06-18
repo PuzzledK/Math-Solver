@@ -4,6 +4,10 @@
 // #include <math.h>
 #include <cmath>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 numAST::numAST(double num) : num(num) {}
 
 double numAST::evaluate() const {
@@ -51,7 +55,7 @@ double mathFuncAST::evaluate() const {
     if(funcName == "cos") return cos(val * (M_PI / 180.0));
     if(funcName == "acos") return acos(val) * (180.0 / M_PI);
     
-    if(funcName == "tan") return tan(val);
+    if(funcName == "tan") return tan(val * (M_PI / 180.0));
     if(funcName == "atan") return atan(val) * (180.0 / M_PI);
 
     throw std::runtime_error("UNSUPPORTED FUNCTION");
