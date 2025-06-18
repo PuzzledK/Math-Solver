@@ -82,7 +82,7 @@ std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
         eat(TokenType::RBRAC);
         return node;
     }
-    else if(curTok.type == TokenType::SIN || curTok.type == TokenType::COS || curTok.type == TokenType::TAN || curTok.type == TokenType::ASIN || curTok.type == TokenType::ACOS || curTok.type == TokenType::ATAN || curTok.type == TokenType::SQRT){
+    else if(curTok.type == TokenType::SIN || curTok.type == TokenType::COS || curTok.type == TokenType::TAN || curTok.type == TokenType::ASIN || curTok.type == TokenType::ACOS || curTok.type == TokenType::ATAN || curTok.type == TokenType::SQRT || curTok.type == TokenType::LN || curTok.type == TokenType::LOG){
         Token temp = curTok;
         eat(curTok.type);
 

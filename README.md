@@ -92,6 +92,8 @@ The calculator currently supports the following operations and functions:
 - `acos(x)`
 - `atan(x)`
 - `sqrt(x)`
+- `log(x)`
+- `ln(x)`
 
 #### The input and output to Trigonometric functions is in degrees.
 

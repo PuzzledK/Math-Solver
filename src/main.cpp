@@ -31,6 +31,8 @@ int main()
             std::cout << "  acos(x)  Arccosine\n";
             std::cout << "  atan(x)  Arctangent\n";
             std::cout << "  sqrt(x)  Square root\n";
+            std::cout << "  log(x)   log with base 10\n";
+            std::cout << "  ln(x)    natural log\n";
             std::cout << "\nNumbers:\n";
             std::cout << "  Integer and floating-point numbers (e.g., 42, 3.14)\n";
             std::cout << "\nType an expression like: sin(0.5) + cos(0.5) or 2^3 + tan(1)\n";

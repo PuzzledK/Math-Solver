@@ -50,6 +50,14 @@ double mathFuncAST::evaluate() const {
         return sqrt(val);
     }
 
+    if(funcName == "log"){
+        return log(val);
+    }
+
+    if(funcName == "log10"){
+        return log10(val);
+    }
+
     if(funcName == "sin") return sin(val * (M_PI / 180.0));
     if(funcName == "asin") return asin(val) * (180.0 / M_PI);
 

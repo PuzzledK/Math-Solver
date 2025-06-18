@@ -18,6 +18,8 @@ enum class TokenType {
     ATAN,
     SQRT,
     EXPO,
+    LN,
+    LOG,
     END
 };
 
