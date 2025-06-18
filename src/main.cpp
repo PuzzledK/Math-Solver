@@ -6,6 +6,7 @@ int main()
 {
     while (true)
     {
+        std::cout<<"ENTER ANY SUPPORTED MATHEMATICAL EXPRESSION (exit to quit):";
         std::string s;
         std::getline(std::cin, s);
 
