@@ -86,7 +86,11 @@ std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
         Token temp = curTok;
         eat(curTok.type);
 
-        return std::make_unique<mathFuncAST>(temp.str,parseExpression());
+        eat(TokenType::LBRAC);
+        auto arg = parseExpression();
+        eat(TokenType::RBRAC);
+
+        return std::make_unique<mathFuncAST>(temp.str,std::move(arg));
     }
 
     throw std::runtime_error("Expected number or parenthesis");
