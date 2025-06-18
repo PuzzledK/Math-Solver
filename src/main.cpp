@@ -4,7 +4,6 @@
 
 int main()
 {
-
     while (true)
     {
         std::string s;

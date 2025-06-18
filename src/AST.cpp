@@ -1,7 +1,8 @@
 // AST.cpp
 #include "AST.hpp"
 #include <stdexcept>
-#include <math.h>
+// #include <math.h>
+#include <cmath>
 
 numAST::numAST(double num) : num(num) {}
 
@@ -37,6 +38,7 @@ mathFuncAST::mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr) : f
 
 double mathFuncAST::evaluate() const {
     auto val = expr -> evaluate();
+    val = val * (M_PI / 180.0);
 
     if(funcName == "sin") return sin(val);
     if(funcName == "asin") return asin(val);
