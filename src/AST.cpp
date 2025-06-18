@@ -46,10 +46,12 @@ double mathFuncAST::evaluate() const {
         return sqrt(val);
     }
     if(funcName == "sin") return sin(val * (M_PI / 180.0));
-    if(funcName == "asin") return asin(val * (M_PI / 180.0));
+    if(funcName == "asin") return asin(val) * (180.0 / M_PI);
+
     if(funcName == "cos") return cos(val * (M_PI / 180.0));
     if(funcName == "acos") return acos(val) * (180.0 / M_PI);
-    if(funcName == "tan") return tan(val) * (180.0 / M_PI);
+    
+    if(funcName == "tan") return tan(val);
     if(funcName == "atan") return atan(val) * (180.0 / M_PI);
 
     throw std::runtime_error("UNSUPPORTED FUNCTION");
