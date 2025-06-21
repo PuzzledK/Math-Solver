@@ -101,11 +101,17 @@ The calculator currently supports the following operations and functions:
 
 - Integer and floating-point numbers (e.g., `42`, `3.14`)
 
+### Variables
+
+- Variables are supported, name can only be alphabets (will add support for alphanumerics and '_')
+
 ### Example Usage
 
 ```
 sin(0.5) + cos(0.5)
 2^3 + tan(1)
+x = sqrt(36)
+y = sqrt(x)
 ```
 
 If you enter an unknown function or invalid syntax, the program will display an error message.
