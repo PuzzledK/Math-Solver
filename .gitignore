@@ -6,3 +6,5 @@ build
 .vscode
 buildScript.sh
 kaleidoscope
+wasmBuild.sh
+wasmBuild
