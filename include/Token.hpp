@@ -20,6 +20,8 @@ enum class TokenType {
     EXPO,
     LN,
     LOG,
+    VAR,
+    ASSIGN,
     END
 };
 

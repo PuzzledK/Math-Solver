@@ -1,14 +1,17 @@
 // main.cpp
 #include <iostream>
 #include "Parser.hpp"
+#include <unordered_map>
 
 int main()
 {   
     std::cout<<"ENTER ANY SUPPORTED MATHEMATICAL EXPRESSION"<<std::endl;
     std::cout<<"Type 'help' for supported expressions and 'exit' to quit"<<std::endl;
+    std::unordered_map<std::string,double> mp;
+
     while (true)
     {
-        std::cout<<"INPUT : ";
+        std::cout<<">>> ";
         std::string s;
         std::getline(std::cin, s);
 
@@ -43,7 +46,7 @@ int main()
             Lexer lexer(s);
             Parser parser(lexer);
             auto result = parser.parse();
-            std::cout << "Result: " << result->evaluate() << std::endl;
+            std::cout << "--> " << result->evaluate(mp) << std::endl;
         }
         catch (const std::exception &e)
         {

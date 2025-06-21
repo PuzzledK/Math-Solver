@@ -8,7 +8,7 @@ private:
     int pos;
 
     Token parseNum(char c);
-    Token parseFunc(char c);
+    Token parseStr(char c);
 
 public:
     Lexer();

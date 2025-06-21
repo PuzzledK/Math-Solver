@@ -21,6 +21,8 @@ std::string tokenTypeToString(TokenType type) {
 		case TokenType::EXPO: return "EXPO";
 		case TokenType::LOG: return "LOG10";
 		case TokenType::LN: return "LN";
+        case TokenType::VAR: return "VAR";
+        case TokenType::ASSIGN: return "ASSIGN";
         default: return "UNKNOWN";        
     }
 }

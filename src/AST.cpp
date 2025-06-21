@@ -10,7 +10,7 @@
 
 numAST::numAST(double num) : num(num) {}
 
-double numAST::evaluate() const {
+double numAST::evaluate(std::unordered_map<std::string, double> &mp) const {
     return num;
 }
 
@@ -21,9 +21,9 @@ double numAST::get() const {
 binOpAST::binOpAST(std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right, char op)
     : left(std::move(left)), right(std::move(right)), op(op) {}
 
-double binOpAST::evaluate() const {
-    double l = left->evaluate();
-    double r = right->evaluate();
+double binOpAST::evaluate(std::unordered_map<std::string, double> &mp) const {
+    double l = left->evaluate(mp);
+    double r = right->evaluate(mp);
 
     switch (op) {
         case '+': return l + r;
@@ -40,8 +40,8 @@ double binOpAST::evaluate() const {
 
 mathFuncAST::mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr) : funcName(funcName), expr(std::move(expr)) {}
 
-double mathFuncAST::evaluate() const {
-    auto val = expr -> evaluate();
+double mathFuncAST::evaluate(std::unordered_map<std::string, double> &mp) const {
+    auto val = expr -> evaluate(mp);
     
     if(funcName == "sqrt") {
         if(val < 0){
@@ -70,4 +70,22 @@ double mathFuncAST::evaluate() const {
     if(funcName == "atan") return atan(val) * (180.0 / M_PI);
 
     throw std::runtime_error("UNSUPPORTED FUNCTION");
+}
+
+varAST::varAST(std::string str) : varName(str) {}
+
+double varAST::evaluate(std::unordered_map<std::string, double>& mp) const {
+    if(!mp.count(varName)){
+        throw std::runtime_error("Undeclared Variable");
+    } 
+
+    return mp[varName];
+}
+
+varAssignAST::varAssignAST(std::string varName, std::unique_ptr<ASTNode> expression) : varName(varName),expression(std::move(expression)) {}
+
+double varAssignAST::evaluate(std::unordered_map<std::string, double>& mp) const{
+    auto val = expression->evaluate(mp);
+    mp[varName] = val;
+    return val;
 }

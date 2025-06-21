@@ -49,19 +49,19 @@ std::unique_ptr<ASTNode> Parser::parseMulDiv() {
 }
 
 std::unique_ptr<ASTNode> Parser::parsePow(){
-    auto node = parseParenOrUnary();
+    auto node = parseTopLevel();
 
     while(curTok.type == TokenType::POW){
         char op = '^';
         eat(curTok.type);
 
-        node = std::make_unique<binOpAST>(std::move(node),parseParenOrUnary(),op);
+        node = std::make_unique<binOpAST>(std::move(node),parseTopLevel(),op);
     }
 
     return node;
 }
 
-std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
+std::unique_ptr<ASTNode> Parser::parseTopLevel() {
     if (curTok.type == TokenType::NUM) {
         auto node = std::make_unique<numAST>(curTok.num);
         eat(TokenType::NUM);
@@ -76,7 +76,7 @@ std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
 
     else if (curTok.type == TokenType::MINUS) {
         eat(TokenType::MINUS);
-        return std::make_unique<binOpAST>(std::make_unique<numAST>(0), parseParenOrUnary(), '-');
+        return std::make_unique<binOpAST>(std::make_unique<numAST>(0), parseTopLevel(), '-');
     } 
 
     else if (curTok.type == TokenType::LBRAC) {
@@ -95,6 +95,23 @@ std::unique_ptr<ASTNode> Parser::parseParenOrUnary() {
         eat(TokenType::RBRAC);
 
         return std::make_unique<mathFuncAST>(temp.str,std::move(arg));
+    }
+
+    else if(curTok.type == TokenType::VAR){
+        Token temp = curTok;
+        eat(TokenType::VAR);
+
+        // If assignment is to be done
+        if(curTok.type == TokenType::ASSIGN){
+            eat(TokenType::ASSIGN);
+
+            auto expr = parseExpression();
+
+            return std::make_unique<varAssignAST>(temp.str,std::move(expr));
+        }
+
+        // If variable access
+        return std::make_unique<varAST>(temp.str);
     }
 
     throw std::runtime_error("Expected number or parenthesis");
