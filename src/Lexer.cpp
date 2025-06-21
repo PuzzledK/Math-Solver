@@ -12,8 +12,13 @@ Token Lexer::parseNum(char c) {
 
     bool dotSeen = (c == '.');
 
-    while (pos < input.length() && (isdigit(input[pos]) || (!dotSeen && input[pos] == '.'))) {
-        if (input[pos] == '.') dotSeen = true;
+    while (pos < input.length() && (isdigit(input[pos]) || input[pos] == '.')) {
+        if (input[pos] == '.') {
+            if(dotSeen){
+                throw std::runtime_error("Invalid Syntax");
+            }
+            dotSeen = true;
+        }
         num += input[pos++];
     }
 

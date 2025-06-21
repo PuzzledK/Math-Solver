@@ -8,3 +8,4 @@ buildScript.sh
 kaleidoscope
 wasmBuild.sh
 wasmBuild
+src/wasm_main.cpp
