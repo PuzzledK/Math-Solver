@@ -2,6 +2,8 @@
 #include "Parser.hpp"
 #include <stdexcept>
 #include <cmath>
+#include "Token.hpp"
+#include <iostream>
 
 #ifndef M_E
 #define M_E 2.71828182845904523536
@@ -28,10 +30,12 @@ std::unique_ptr<ASTNode> Parser::parseCondition(){
     auto left = parseExpression();
 
     Token temp = curTok;
+    // std::cout<<tokenTypeToString(curTok.type)<<std::endl;
+
     if(curTok.type == TokenType::EQ || curTok.type == TokenType::NE || curTok.type == TokenType::GT || curTok.type == TokenType::LT || curTok.type == TokenType::GTE || curTok.type == TokenType::LTE){
         eat(curTok.type);
     }
-    else throw std::runtime_error("Expected comparision operators");
+    else throw std::runtime_error("Expected comparision operators (Parser.cpp)");
 
     std::string op = temp.str;
 
@@ -81,6 +85,10 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
     if (curTok.type == TokenType::NUM) {
         auto node = std::make_unique<numAST>(curTok.num);
         eat(TokenType::NUM);
+
+        // if(curTok.type == TokenType :: ASSIGN){
+        //     throw std::runtime_error("Cannot assign value to constant");
+        // }
         return node;
     }
     
@@ -125,20 +133,6 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
 
             return std::make_unique<varAssignAST>(temp.str,std::move(expr));
         }
-
-
-        if(curTok.type == TokenType::EQ || curTok.type == TokenType::NE || curTok.type == TokenType::GT || curTok.type == TokenType::LT || curTok.type == TokenType::GTE || curTok.type == TokenType::LTE){
-            auto left = std::make_unique<varAST>(temp.str);
-            temp = curTok;
-            eat(curTok.type);
-
-            std::string op = temp.str;
-
-            auto right = parseExpression();
-
-            return std::make_unique<ifCondAST>(op,std::move(left),std::move(right));
-        }
-
 
         // If variable access
         return std::make_unique<varAST>(temp.str);

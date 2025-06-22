@@ -122,5 +122,5 @@ double ifCondAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
     else if(op == "GTE") return l >= r;
     else if(op == "LTE") return l <= r;
 
-    else throw std::runtime_error("Expected Comparision operator");
+    else throw std::runtime_error("Expected Comparision operator (AST.cpp)");
 }
