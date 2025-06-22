@@ -89,3 +89,38 @@ double varAssignAST::evaluate(std::unordered_map<std::string, double>& mp) const
     mp[varName] = val;
     return val;
 }
+
+ifThenElseAST :: ifThenElseAST(std::unique_ptr<ASTNode> condition,std::unique_ptr<ASTNode> thenBlock,std::unique_ptr<ASTNode> elseBlock) : condition(std::move(condition)),thenBlock(std::move(thenBlock)),elseBlock(std::move(elseBlock)) {};
+
+double ifThenElseAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
+    
+    auto val = condition -> evaluate(mp);
+
+    if(val){
+        return thenBlock -> evaluate(mp);
+    }
+    else{
+        if(elseBlock) return elseBlock -> evaluate(mp);
+        else return 0;
+    }
+
+    return 0;
+}
+
+ifCondAST :: ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_ptr<ASTNode> right) : op(op),left(std::move(left)), right(std::move(right)) {}
+
+double ifCondAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
+    auto l = left -> evaluate(mp);
+    auto r = right -> evaluate(mp);
+    
+    if(op == "EQ")       return l == r;
+    else if(op == "NE")  return l != r;
+    
+    else if(op == "GT")  return l > r;
+
+    else if(op == "LT")  return l < r;
+    else if(op == "GTE") return l >= r;
+    else if(op == "LTE") return l <= r;
+
+    else throw std::runtime_error("Expected Comparision operator");
+}

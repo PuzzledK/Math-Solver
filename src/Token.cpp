@@ -23,6 +23,15 @@ std::string tokenTypeToString(TokenType type) {
 		case TokenType::LN: return "LN";
         case TokenType::VAR: return "VAR";
         case TokenType::ASSIGN: return "ASSIGN";
+        case TokenType::IF: return "IF";
+        case TokenType::THEN: return "THEN";
+        case TokenType::ELSE: return "ELSE";
+        case TokenType::EQ: return "EQ";
+        case TokenType::NE: return "NQ";
+        case TokenType::GT: return "GT";
+        case TokenType::LT: return "LT";
+        case TokenType::LTE: return "LTE";
+        case TokenType::GTE: return "GTE";
         default: return "UNKNOWN";        
     }
 }

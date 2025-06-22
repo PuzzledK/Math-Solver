@@ -22,6 +22,10 @@ enum class TokenType {
     LOG,
     VAR,
     ASSIGN,
+    IF,
+    THEN,
+    ELSE,
+    EQ,NE,GT,LT,GTE,LTE,
     END
 };
 

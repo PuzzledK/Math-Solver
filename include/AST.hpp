@@ -51,3 +51,24 @@ class varAssignAST : public ASTNode {
         varAssignAST(std::string varName, std::unique_ptr<ASTNode> expression);
         double evaluate(std::unordered_map<std::string, double> &mp) const override;
 };
+
+class ifThenElseAST : public ASTNode{
+    std::unique_ptr<ASTNode> condition;
+    std::unique_ptr<ASTNode> thenBlock;
+    std::unique_ptr<ASTNode> elseBlock;
+
+    public:
+        ifThenElseAST(std::unique_ptr<ASTNode> condition,std::unique_ptr<ASTNode> thenBlock,std::unique_ptr<ASTNode> elseBlock);
+
+        double evaluate(std::unordered_map<std::string,double> &mp) const override;
+};
+
+class ifCondAST : public ASTNode{
+    std::string op;
+    std::unique_ptr<ASTNode> left;
+    std::unique_ptr<ASTNode> right;
+
+    public:
+        ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_ptr<ASTNode> right);
+        double evaluate(std::unordered_map<std::string,double> &mp) const override;
+};

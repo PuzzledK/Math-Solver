@@ -24,6 +24,22 @@ std::unique_ptr<ASTNode> Parser::parse() {
     return parseExpression();
 }
 
+std::unique_ptr<ASTNode> Parser::parseCondition(){
+    auto left = parseExpression();
+
+    Token temp = curTok;
+    if(curTok.type == TokenType::EQ || curTok.type == TokenType::NE || curTok.type == TokenType::GT || curTok.type == TokenType::LT || curTok.type == TokenType::GTE || curTok.type == TokenType::LTE){
+        eat(curTok.type);
+    }
+    else throw std::runtime_error("Expected comparision operators");
+
+    std::string op = temp.str;
+
+    auto right = parseExpression();
+
+    return std::make_unique<ifCondAST>(op,std::move(left),std::move(right));
+}
+
 std::unique_ptr<ASTNode> Parser::parseExpression() {
     auto node = parseMulDiv();
 
@@ -110,8 +126,43 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
             return std::make_unique<varAssignAST>(temp.str,std::move(expr));
         }
 
+
+        if(curTok.type == TokenType::EQ || curTok.type == TokenType::NE || curTok.type == TokenType::GT || curTok.type == TokenType::LT || curTok.type == TokenType::GTE || curTok.type == TokenType::LTE){
+            auto left = std::make_unique<varAST>(temp.str);
+            temp = curTok;
+            eat(curTok.type);
+
+            std::string op = temp.str;
+
+            auto right = parseExpression();
+
+            return std::make_unique<ifCondAST>(op,std::move(left),std::move(right));
+        }
+
+
         // If variable access
         return std::make_unique<varAST>(temp.str);
+    }
+
+    else if(curTok.type == TokenType :: IF){
+        eat(TokenType::IF);
+
+        eat(TokenType::LBRAC);
+        auto cond = parseCondition();
+        eat(TokenType::RBRAC);
+
+        eat(TokenType::THEN);
+
+        auto thenBlock = parseExpression();
+
+        std::unique_ptr<ASTNode> elseBlock = nullptr;
+        if(curTok.type == TokenType::ELSE){
+            eat(TokenType::ELSE);
+
+            elseBlock = parseExpression();
+        }
+
+        return std::make_unique<ifThenElseAST>(std::move(cond),std::move(thenBlock),std::move(elseBlock));
     }
 
     throw std::runtime_error("Expected number or parenthesis");

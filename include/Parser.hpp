@@ -13,6 +13,7 @@ class Parser {
     std::unique_ptr<ASTNode> parseMulDiv();
     std::unique_ptr<ASTNode> parsePow();
     std::unique_ptr<ASTNode> parseTopLevel();
+    std::unique_ptr<ASTNode> parseCondition();
 
 public:
     Parser(Lexer lex);
