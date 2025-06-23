@@ -4,14 +4,22 @@
 #include <cmath>
 #include "Token.hpp"
 #include <iostream>
+#include <unordered_map>
 
 #ifndef M_E
 #define M_E 2.71828182845904523536
 #endif 
 
+std::unordered_map<char,int> precedence;
+
 
 Parser::Parser(Lexer lex) : lexer(lex) {
     curTok = lexer.getNextToken();
+    precedence['+'] = 1;
+    precedence['-'] = 1;
+    precedence['*'] = 2;
+    precedence['/'] = 2;
+    precedence['^'] = 3;
 }
 
 void Parser::eat(TokenType tok) {
@@ -30,7 +38,6 @@ std::unique_ptr<ASTNode> Parser::parseCondition(){
     auto left = parseExpression();
 
     Token temp = curTok;
-    // std::cout<<tokenTypeToString(curTok.type)<<std::endl;
 
     if(curTok.type == TokenType::RBRAC){
         return std::make_unique<ifCondAST>("None",std::move(left),nullptr);
@@ -48,41 +55,32 @@ std::unique_ptr<ASTNode> Parser::parseCondition(){
     return std::make_unique<ifCondAST>(op,std::move(left),std::move(right));
 }
 
-std::unique_ptr<ASTNode> Parser::parseExpression() {
-    auto node = parseMulDiv();
+std::unique_ptr<ASTNode> Parser::parseExpression(int minPrec) {
+    auto left = parseTopLevel();
 
-    while (curTok.type == TokenType::PLUS || curTok.type == TokenType::MINUS) {
-        char op = (curTok.type == TokenType::PLUS ? '+' : '-');
-        eat(curTok.type);
-        node = std::make_unique<binOpAST>(std::move(node), parseMulDiv(), op);
-    }
+    Token tempTok = curTok;
 
-    return node;
-}
+    while(true){
+        char op = '0';
+        int prec = -1;
 
-std::unique_ptr<ASTNode> Parser::parseMulDiv() {
-    auto node = parsePow();
+        if (curTok.type == TokenType::PLUS)      { op = '+'; prec = precedence[op]; }
+        else if (curTok.type == TokenType::MINUS){ op = '-'; prec = precedence[op]; }
+        else if (curTok.type == TokenType::MULT) { op = '*'; prec = precedence[op]; }
+        else if (curTok.type == TokenType::DIV)  { op = '/'; prec = precedence[op]; }
+        else if (curTok.type == TokenType::POW)  { op = '^'; prec = precedence[op]; }
+        else break;
 
-    while (curTok.type == TokenType::MULT || curTok.type == TokenType::DIV) {
-        char op = (curTok.type == TokenType::MULT ? '*' : '/');
-        eat(curTok.type);
-        node = std::make_unique<binOpAST>(std::move(node), parsePow(), op);
-    }
+        if (prec < minPrec) break;
 
-    return node;
-}
-
-std::unique_ptr<ASTNode> Parser::parsePow(){
-    auto node = parseTopLevel();
-
-    while(curTok.type == TokenType::POW){
-        char op = '^';
         eat(curTok.type);
 
-        node = std::make_unique<binOpAST>(std::move(node),parseTopLevel(),op);
+        auto right = parseExpression(prec + (op == '^' ? 0 : 1)); // right-associative ^
+
+        left = std::make_unique<binOpAST>(std::move(left), std::move(right), op);
     }
 
-    return node;
+    return left;
 }
 
 std::unique_ptr<ASTNode> Parser::parseTopLevel() {
@@ -90,9 +88,6 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
         auto node = std::make_unique<numAST>(curTok.num);
         eat(TokenType::NUM);
 
-        // if(curTok.type == TokenType :: ASSIGN){
-        //     throw std::runtime_error("Cannot assign value to constant");
-        // }
         return node;
     }
     

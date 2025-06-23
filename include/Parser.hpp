@@ -9,9 +9,7 @@ class Parser {
     Token curTok;
 
     void eat(TokenType tok);
-    std::unique_ptr<ASTNode> parseExpression();
-    std::unique_ptr<ASTNode> parseMulDiv();
-    std::unique_ptr<ASTNode> parsePow();
+    std::unique_ptr<ASTNode> parseExpression(int minPrec = 0);
     std::unique_ptr<ASTNode> parseTopLevel();
     std::unique_ptr<ASTNode> parseCondition();
 
