@@ -111,6 +111,9 @@ ifCondAST :: ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_
 
 double ifCondAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
     auto l = left -> evaluate(mp);
+    if(!right){
+        return (l != 0);
+    }
     auto r = right -> evaluate(mp);
     
     if(op == "EQ")       return l == r;

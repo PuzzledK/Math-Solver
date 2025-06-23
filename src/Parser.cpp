@@ -32,6 +32,10 @@ std::unique_ptr<ASTNode> Parser::parseCondition(){
     Token temp = curTok;
     // std::cout<<tokenTypeToString(curTok.type)<<std::endl;
 
+    if(curTok.type == TokenType::RBRAC){
+        return std::make_unique<ifCondAST>("None",std::move(left),nullptr);
+    }
+
     if(curTok.type == TokenType::EQ || curTok.type == TokenType::NE || curTok.type == TokenType::GT || curTok.type == TokenType::LT || curTok.type == TokenType::GTE || curTok.type == TokenType::LTE){
         eat(curTok.type);
     }
