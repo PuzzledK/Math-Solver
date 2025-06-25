@@ -12,6 +12,7 @@ class Parser {
     std::unique_ptr<ASTNode> parseExpression(int minPrec = 0);
     std::unique_ptr<ASTNode> parseTopLevel();
     std::unique_ptr<ASTNode> parseCondition();
+    std::unique_ptr<ASTNode> parseBlock();
 
 public:
     Parser(Lexer lex);

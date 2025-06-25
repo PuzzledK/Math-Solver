@@ -71,7 +71,10 @@ Token Lexer::getNextToken() {
         case '/': return {TokenType::DIV, 0};
         case '(': return {TokenType::LBRAC, 0};
         case ')': return {TokenType::RBRAC, 0};
+        case '{': return {TokenType::LCURLY, 0};
+        case '}': return {TokenType::RCURLY, 0};
         case '^': return {TokenType::POW,0};
+        case ';': return {TokenType::SEMICOLON,0};
         case '=': {
             if(pos < input.length()){
                 if(input[pos] == '='){

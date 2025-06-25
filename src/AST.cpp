@@ -127,3 +127,13 @@ double ifCondAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
 
     else throw std::runtime_error("Expected Comparision operator (AST.cpp)");
 }
+
+blockAST :: blockAST(std::vector<std::unique_ptr<ASTNode>> exprs) : exprs(std::move(exprs)) {}
+
+double blockAST :: evaluate(std::unordered_map<std::string,double> &mp) const {
+    for(int i = 0;i<exprs.size();i++){
+        exprs[i] -> evaluate(mp);
+    }
+
+    return 1;
+}

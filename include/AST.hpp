@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-
+#include <vector>
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
@@ -70,5 +70,13 @@ class ifCondAST : public ASTNode{
 
     public:
         ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_ptr<ASTNode> right);
+        double evaluate(std::unordered_map<std::string,double> &mp) const override;
+};
+
+class blockAST : public ASTNode{
+    std::vector<std::unique_ptr<ASTNode>> exprs;
+
+    public:
+        blockAST(std::vector<std::unique_ptr<ASTNode>> exprs);
         double evaluate(std::unordered_map<std::string,double> &mp) const override;
 };

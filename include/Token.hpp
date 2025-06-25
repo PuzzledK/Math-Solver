@@ -26,6 +26,8 @@ enum class TokenType {
     THEN,
     ELSE,
     EQ,NE,GT,LT,GTE,LTE,
+    SEMICOLON,
+    LCURLY,RCURLY,
     END
 };
 

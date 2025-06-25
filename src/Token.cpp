@@ -32,6 +32,9 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::LT: return "LT";
         case TokenType::LTE: return "LTE";
         case TokenType::GTE: return "GTE";
+        case TokenType::SEMICOLON: return "SEMI-COLON";
+        case TokenType::LCURLY: return "LCURLY";
+        case TokenType::RCURLY: return "RCURLY";
         default: return "UNKNOWN";        
     }
 }
