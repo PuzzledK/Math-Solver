@@ -48,7 +48,7 @@ std::unique_ptr<ASTNode> Parser::parseBlock(){
 }
 
 std::unique_ptr<ASTNode> Parser::parseCondition(){
-    auto left = parseExpression();
+    auto left = parseExpressionNonCurly();
 
     Token temp = curTok;
 
@@ -63,9 +63,17 @@ std::unique_ptr<ASTNode> Parser::parseCondition(){
 
     std::string op = temp.str;
 
-    auto right = parseExpression();
+    auto right = parseExpressionNonCurly();
 
     return std::make_unique<ifCondAST>(op,std::move(left),std::move(right));
+}
+
+std::unique_ptr<ASTNode> Parser::parseExpressionNonCurly(int minPrec) {
+    if (curTok.type == TokenType::LCURLY) {
+        throw std::runtime_error("Invalid expression");
+    }
+
+    return parseExpression(minPrec);
 }
 
 std::unique_ptr<ASTNode> Parser::parseExpression(int minPrec) {
@@ -126,7 +134,7 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
 
     else if (curTok.type == TokenType::LBRAC) {
         eat(TokenType::LBRAC);
-        auto node = parseExpression();
+        auto node = parseExpressionNonCurly();
         eat(TokenType::RBRAC);
         return node;
     }
@@ -136,7 +144,7 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
         eat(curTok.type);
 
         eat(TokenType::LBRAC);
-        auto arg = parseExpression();
+        auto arg = parseExpressionNonCurly();
         eat(TokenType::RBRAC);
 
         return std::make_unique<mathFuncAST>(temp.str,std::move(arg));
@@ -150,7 +158,7 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
         if(curTok.type == TokenType::ASSIGN){
             eat(TokenType::ASSIGN);
 
-            auto expr = parseExpression();
+            auto expr = parseExpressionNonCurly();
 
             return std::make_unique<varAssignAST>(temp.str,std::move(expr));
         }
