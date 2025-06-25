@@ -16,11 +16,12 @@
   - Assignment: `x = 5`
   - Usage: `x + 2`
   - Variable names: alphabets only (e.g., `foo`, `bar`)
+- **Blocks:** Use `{ ... }` to group multiple expressions/statements, separated by semicolons.
 - **If-Then-Else Expressions:**
   - Syntax: `if(<condition>) then <expr> else <expr>`
   - Supported comparison operators: `==`, `!=`, `>`, `<`, `>=`, `<=`
 - **Error handling:**
-  - Invalid syntax, division by zero, invalid function input, undeclared variable, etc.
+  - Invalid syntax, division by zero, invalid function input (e.g., sqrt of negative), undeclared variable, unsupported function, etc.
 
 ---
 
@@ -113,6 +114,16 @@ ln(e)
 x = 10
 y = sqrt(x)
 x + y
+```
+
+## Blocks
+
+```text
+{
+  x = 2;
+  y = 3;
+  x + y
+}
 ```
 
 ## If-Then-Else
