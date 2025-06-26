@@ -28,12 +28,14 @@ enum class TokenType {
     EQ,NE,GT,LT,GTE,LTE,
     SEMICOLON,
     LCURLY,RCURLY,
+    DEF,COMMA,
+    NONE,
     END
 };
 
 struct Token {
-    TokenType type;
-    double num;
+    TokenType type = TokenType :: NONE;
+    double num = 0;
     std::string str = "";
 };
 

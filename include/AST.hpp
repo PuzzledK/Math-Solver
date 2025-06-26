@@ -1,20 +1,21 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include "Context.hpp"
+
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
-    virtual double evaluate(std::unordered_map<std::string, double> &mp) const = 0;
+    virtual double evaluate(Context &context)   = 0;
 };
 
 class numAST : public ASTNode {
     double num;
 public:
     numAST(double num);
-    double evaluate(std::unordered_map<std::string, double> &mp) const override;
-    double get() const;
+    double evaluate(Context& context)   override;
+    double get()  ;
 };
 
 class binOpAST : public ASTNode {
@@ -23,7 +24,7 @@ class binOpAST : public ASTNode {
     char op;
 public:
     binOpAST(std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right, char op);
-    double evaluate(std::unordered_map<std::string, double> &mp) const override;
+    double evaluate(Context& context)   override;
 };
 
 class mathFuncAST : public ASTNode {
@@ -32,7 +33,7 @@ class mathFuncAST : public ASTNode {
 
     public:
         mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr);
-        double evaluate(std::unordered_map<std::string, double> &mp) const override;
+        double evaluate(Context& context)   override;
 };
 
 class varAST : public ASTNode {
@@ -40,7 +41,7 @@ class varAST : public ASTNode {
     
     public:
         varAST(std::string str);
-        double evaluate(std::unordered_map<std::string, double> &mp) const override;
+        double evaluate(Context& context)   override;
 };
 
 class varAssignAST : public ASTNode {
@@ -49,7 +50,7 @@ class varAssignAST : public ASTNode {
 
     public:
         varAssignAST(std::string varName, std::unique_ptr<ASTNode> expression);
-        double evaluate(std::unordered_map<std::string, double> &mp) const override;
+        double evaluate(Context& context)   override;
 };
 
 class ifThenElseAST : public ASTNode{
@@ -60,7 +61,7 @@ class ifThenElseAST : public ASTNode{
     public:
         ifThenElseAST(std::unique_ptr<ASTNode> condition,std::unique_ptr<ASTNode> thenBlock,std::unique_ptr<ASTNode> elseBlock);
 
-        double evaluate(std::unordered_map<std::string,double> &mp) const override;
+        double evaluate(Context& context)   override;
 };
 
 class ifCondAST : public ASTNode{
@@ -70,7 +71,7 @@ class ifCondAST : public ASTNode{
 
     public:
         ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_ptr<ASTNode> right);
-        double evaluate(std::unordered_map<std::string,double> &mp) const override;
+        double evaluate(Context& context)   override;
 };
 
 class blockAST : public ASTNode{
@@ -78,5 +79,24 @@ class blockAST : public ASTNode{
 
     public:
         blockAST(std::vector<std::unique_ptr<ASTNode>> exprs);
-        double evaluate(std::unordered_map<std::string,double> &mp) const override;
+        double evaluate(Context& context)   override;
+};
+
+class funcDefAST : public ASTNode {
+    std::string funcName;
+    std::vector<std::string> args;
+    std::unique_ptr<ASTNode> funcBody;
+    
+    public:
+        funcDefAST(std::string funcName, std::vector<std::string> args, std::unique_ptr<ASTNode> funcBody);
+        double evaluate(Context& context)   override;
+};
+
+class funcCallAST : public ASTNode {
+    std::string funcName;
+    std::vector<std::unique_ptr<ASTNode>> args;
+
+    public:
+        funcCallAST(std::string funcName, std::vector<std::unique_ptr<ASTNode>> args);
+        double evaluate(Context& context)   override;
 };

@@ -46,6 +46,7 @@ Token Lexer::parseStr(char c){
     if(str == "if")   return {TokenType::IF,0};
     if(str == "then") return {TokenType::THEN,0};
     if(str == "else") return {TokenType::ELSE,0};
+    if (str == "def")  return { TokenType::DEF,0};
 
     else{
         return {TokenType::VAR,0,str};
@@ -75,6 +76,7 @@ Token Lexer::getNextToken() {
         case '}': return {TokenType::RCURLY, 0};
         case '^': return {TokenType::POW,0};
         case ';': return {TokenType::SEMICOLON,0};
+        case ',': return { TokenType::COMMA,0 };
         case '=': {
             if(pos < input.length()){
                 if(input[pos] == '='){

@@ -163,6 +163,25 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
             return std::make_unique<varAssignAST>(temp.str,std::move(expr));
         }
 
+        // Function Call
+        if (curTok.type == TokenType::LBRAC) {
+            eat(TokenType::LBRAC);
+
+            std::vector<std::unique_ptr<ASTNode>> args;
+            while (curTok.type != TokenType::RBRAC) {
+                auto e = parseExpressionNonCurly();
+                args.push_back(std::move(e));
+
+                if (curTok.type == TokenType::RBRAC) break;
+
+                eat(TokenType::COMMA);
+            }
+
+            eat(TokenType::RBRAC);
+
+            return std::make_unique<funcCallAST>(std::move(temp.str), std::move(args));
+        }
+
         // If variable access
         return std::make_unique<varAST>(temp.str);
     }
@@ -186,6 +205,45 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
         }
 
         return std::make_unique<ifThenElseAST>(std::move(cond),std::move(thenBlock),std::move(elseBlock));
+    }
+
+    else if (curTok.type == TokenType::DEF) {
+        eat(TokenType::DEF);
+
+        Token temp = curTok;
+        eat(TokenType::VAR);
+
+        eat(TokenType::LBRAC);
+        std::vector<std::string> args;
+        while(curTok.type != TokenType::RBRAC) {
+            Token temp2 = curTok;
+            eat(TokenType::VAR);
+            
+            args.push_back(temp2.str);
+
+            if (curTok.type == TokenType::COMMA) {
+                eat(TokenType::COMMA);
+            }
+
+            else break;
+        }
+
+        eat(TokenType::RBRAC);
+
+        if (curTok.type == TokenType::LCURLY) {
+            eat(TokenType::LCURLY);
+            auto e = parseBlock();
+            eat(TokenType::RCURLY);
+
+            return std::make_unique<funcDefAST>(std::move(temp.str), std::move(args), std::move(e));
+        }
+
+        else {
+            auto e = parseExpressionNonCurly();
+
+            return std::make_unique<funcDefAST>(std::move(temp.str), std::move(args), std::move(e));
+        }
+        
     }
 
     throw std::runtime_error("Expected number or parenthesis");

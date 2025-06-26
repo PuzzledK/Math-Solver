@@ -3,6 +3,7 @@
 #include <stdexcept>
 // #include <math.h>
 #include <cmath>
+#include "Context.hpp"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -10,20 +11,20 @@
 
 numAST::numAST(double num) : num(num) {}
 
-double numAST::evaluate(std::unordered_map<std::string, double> &mp) const {
+double numAST::evaluate(Context& context)   {
     return num;
 }
 
-double numAST::get() const {
+double numAST::get()   {
     return num;
 }
 
 binOpAST::binOpAST(std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right, char op)
     : left(std::move(left)), right(std::move(right)), op(op) {}
 
-double binOpAST::evaluate(std::unordered_map<std::string, double> &mp) const {
-    double l = left->evaluate(mp);
-    double r = right->evaluate(mp);
+double binOpAST::evaluate(Context& context)   {
+    double l = left->evaluate(context);
+    double r = right->evaluate(context);
 
     switch (op) {
         case '+': return l + r;
@@ -40,8 +41,8 @@ double binOpAST::evaluate(std::unordered_map<std::string, double> &mp) const {
 
 mathFuncAST::mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr) : funcName(funcName), expr(std::move(expr)) {}
 
-double mathFuncAST::evaluate(std::unordered_map<std::string, double> &mp) const {
-    auto val = expr -> evaluate(mp);
+double mathFuncAST::evaluate(Context& context)   {
+    auto val = expr -> evaluate(context);
     
     if(funcName == "sqrt") {
         if(val < 0){
@@ -74,33 +75,33 @@ double mathFuncAST::evaluate(std::unordered_map<std::string, double> &mp) const 
 
 varAST::varAST(std::string str) : varName(str) {}
 
-double varAST::evaluate(std::unordered_map<std::string, double>& mp) const {
-    if(!mp.count(varName)){
+double varAST::evaluate(Context& context)   {
+    if(!context.variables.count(varName)){
         throw std::runtime_error("Undeclared Variable");
     } 
 
-    return mp[varName];
+    return context.variables[varName];
 }
 
 varAssignAST::varAssignAST(std::string varName, std::unique_ptr<ASTNode> expression) : varName(varName),expression(std::move(expression)) {}
 
-double varAssignAST::evaluate(std::unordered_map<std::string, double>& mp) const{
-    auto val = expression->evaluate(mp);
-    mp[varName] = val;
+double varAssignAST::evaluate(Context& context)  {
+    auto val = expression->evaluate(context);
+    context.variables[varName] = val;
     return val;
 }
 
 ifThenElseAST :: ifThenElseAST(std::unique_ptr<ASTNode> condition,std::unique_ptr<ASTNode> thenBlock,std::unique_ptr<ASTNode> elseBlock) : condition(std::move(condition)),thenBlock(std::move(thenBlock)),elseBlock(std::move(elseBlock)) {};
 
-double ifThenElseAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
+double ifThenElseAST :: evaluate(Context& context)  {
     
-    auto val = condition -> evaluate(mp);
+    auto val = condition -> evaluate(context);
 
     if(val){
-        return thenBlock -> evaluate(mp);
+        return thenBlock -> evaluate(context);
     }
     else{
-        if(elseBlock) return elseBlock -> evaluate(mp);
+        if(elseBlock) return elseBlock -> evaluate(context);
         else return 0;
     }
 
@@ -109,12 +110,12 @@ double ifThenElseAST :: evaluate(std::unordered_map<std::string,double> &mp) con
 
 ifCondAST :: ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_ptr<ASTNode> right) : op(op),left(std::move(left)), right(std::move(right)) {}
 
-double ifCondAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
-    auto l = left -> evaluate(mp);
+double ifCondAST :: evaluate(Context& context)  {
+    auto l = left -> evaluate(context);
     if(!right){
         return (l != 0);
     }
-    auto r = right -> evaluate(mp);
+    auto r = right -> evaluate(context);
     
     if(op == "EQ")       return l == r;
     else if(op == "NE")  return l != r;
@@ -130,10 +131,43 @@ double ifCondAST :: evaluate(std::unordered_map<std::string,double> &mp) const{
 
 blockAST :: blockAST(std::vector<std::unique_ptr<ASTNode>> exprs) : exprs(std::move(exprs)) {}
 
-double blockAST :: evaluate(std::unordered_map<std::string,double> &mp) const {
+double blockAST :: evaluate(Context& context)   {
     for(int i = 0;i<exprs.size();i++){
-        exprs[i] -> evaluate(mp);
+        exprs[i] -> evaluate(context);
     }
 
     return 1;
+}
+
+funcDefAST :: funcDefAST(std::string funcName, std::vector<std::string> args, std::unique_ptr<ASTNode> funcBody) : funcName(std::move(funcName)),args(std::move(args)), funcBody(std::move(funcBody)) {}
+
+double funcDefAST :: evaluate(Context& context)  {
+    context.functions[funcName] = std::make_pair(std::move(args),std::move(funcBody));
+
+    return 0;
+}
+
+funcCallAST :: funcCallAST(std::string funcName, std::vector<std::unique_ptr<ASTNode>> args) : funcName(std::move(funcName)),args(std::move(args)) {}
+
+double funcCallAST::evaluate(Context& context)   {
+    auto it = context.functions.find(funcName);
+
+    if (it == context.functions.end()) {
+        throw std::runtime_error("Unrecognized Function " + funcName);
+    }
+        
+
+    auto& [allArgs, funcBody] = it->second;
+
+    if (args.size() != allArgs.size()) {
+        throw std::runtime_error("Invalid / Incomplete arguments to function " + funcName);
+    }
+
+    Context localContext = context.makeLocalContext();
+
+    for (int i = 0;i < args.size();i++) {
+        localContext.variables[allArgs[i]] = args[i]->evaluate(context);
+    }
+
+    return funcBody->evaluate(localContext);
 }

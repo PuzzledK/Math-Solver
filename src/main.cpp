@@ -2,12 +2,13 @@
 #include <iostream>
 #include "Parser.hpp"
 #include <unordered_map>
+#include "Context.hpp"
 
 int main()
 {   
     std::cout<<"ENTER ANY SUPPORTED MATHEMATICAL EXPRESSION"<<std::endl;
     std::cout<<"Type 'help' for supported expressions and 'exit' to quit"<<std::endl;
-    std::unordered_map<std::string,double> mp;
+    Context globalContext;
 
     while (true)
     {
@@ -46,7 +47,7 @@ int main()
             Lexer lexer(s);
             Parser parser(lexer);
             auto result = parser.parse();
-            std::cout << "--> " << result->evaluate(mp) << std::endl;
+            std::cout << "--> " << result->evaluate(globalContext) << std::endl;
         }
         catch (const std::exception &e)
         {

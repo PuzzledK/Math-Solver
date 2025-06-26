@@ -35,6 +35,8 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::SEMICOLON: return "SEMI-COLON";
         case TokenType::LCURLY: return "LCURLY";
         case TokenType::RCURLY: return "RCURLY";
+        case TokenType::DEF: return "DEF";
+        case TokenType::COMMA: return "COMMA";
         default: return "UNKNOWN";        
     }
 }
