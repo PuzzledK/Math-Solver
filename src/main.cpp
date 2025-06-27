@@ -18,7 +18,7 @@ int main()
 
         if(s == "exit") break;
         if(s == "help"){
-            std::cout << "\nSupported commands and functions:\n";
+            std::cout << "\nSupported commands and features:\n";
             std::cout << "\nOperators:\n";
             std::cout << "  +   Addition\n";
             std::cout << "  -   Subtraction\n";
@@ -26,20 +26,29 @@ int main()
             std::cout << "  /   Division\n";
             std::cout << "  ^   Exponentiation\n";
             std::cout << "  ( ) Parentheses\n";
-            std::cout << "  e (Euler's constant)\n";
-            std::cout << "\nFunctions:\n";
-            std::cout << "  sin(x)   Sine\n";
-            std::cout << "  cos(x)   Cosine\n";
-            std::cout << "  tan(x)   Tangent\n";
-            std::cout << "  asin(x)  Arcsine\n";
-            std::cout << "  acos(x)  Arccosine\n";
-            std::cout << "  atan(x)  Arctangent\n";
-            std::cout << "  sqrt(x)  Square root\n";
-            std::cout << "  log(x)   log with base 10\n";
-            std::cout << "  ln(x)    natural log\n";
+            std::cout << "  e   Euler's number\n";
+            std::cout << "\nFunctions (input/output in degrees where applicable):\n";
+            std::cout << "  sin(x), cos(x), tan(x)\n";
+            std::cout << "  asin(x), acos(x), atan(x)\n";
+            std::cout << "  sqrt(x), log(x) [base 10], ln(x) [base e]\n";
+            std::cout << "\nVariables:\n";
+            std::cout << "  Assignment: x = 5\n";
+            std::cout << "  Usage: x + 2\n";
+            std::cout << "  Variable names: alphabets only (e.g., foo, bar)\n";
+            std::cout << "\nBlocks:\n";
+            std::cout << "  { ... } to group multiple expressions/statements, separated by semicolons\n";
+            std::cout << "\nIf-Then-Else Expressions:\n";
+            std::cout << "  if(<condition>) then <expr> else <expr>\n";
+            std::cout << "  Supported: ==, !=, >, <, >=, <=\n";
+            std::cout << "\nUser-defined Functions:\n";
+            std::cout << "  def f(x, y) { x + y; }\n";
+            std::cout << "  f(2, 3)\n";
+            std::cout << "\nCommands:\n";
+            std::cout << "  help   Show this help message\n";
+            std::cout << "  exit   Quit the program\n";
             std::cout << "\nNumbers:\n";
             std::cout << "  Integer and floating-point numbers (e.g., 42, 3.14)\n";
-            std::cout << "\nType an expression like: sin(0.5) + cos(0.5) or 2^3 + tan(1)\n";
+            std::cout << "\nType an expression like: sin(30) + cos(60), x = 2, def sq(x) x^2, or use blocks and if-then-else.\n";
             continue;
         }
         try

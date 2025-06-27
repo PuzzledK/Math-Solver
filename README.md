@@ -20,8 +20,14 @@
 - **If-Then-Else Expressions:**
   - Syntax: `if(<condition>) then <expr> else <expr>`
   - Supported comparison operators: `==`, `!=`, `>`, `<`, `>=`, `<=`
+- **User-defined functions:**
+  - Define: `def f(x, y) { x + y; }` or `def sq(x) x^2`
+  - Call: `f(2, 3)`
 - **Error handling:**
   - Invalid syntax, division by zero, invalid function input (e.g., sqrt of negative), undeclared variable, unsupported function, etc.
+- **Commands:**
+  - `help` for supported expressions
+  - `exit` to quit
 
 ---
 
@@ -132,6 +138,15 @@ x + y
 if(2 > 1) then 42 else 0
 if(x == 10) then x^2 else 0
 if(sin(90) == 1) then 1 else 0
+```
+
+## User-defined Functions
+
+```text
+def add(a, b) { a + b; }
+add(2, 3)
+def sq(x) x^2
+sq(5)
 ```
 
 ## Nested Expressions
