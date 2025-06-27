@@ -132,8 +132,20 @@ double ifCondAST :: evaluate(Context& context)  {
 blockAST :: blockAST(std::vector<std::unique_ptr<ASTNode>> exprs) : exprs(std::move(exprs)) {}
 
 double blockAST :: evaluate(Context& context)   {
+    Context localContext = context.makeLocalContext();
     for(int i = 0;i<exprs.size();i++){
-        exprs[i] -> evaluate(context);
+        exprs[i] -> evaluate(localContext);
+    }
+
+    return 1;
+}
+
+funcBlockAST::funcBlockAST(std::vector<std::unique_ptr<ASTNode>> exprs) : exprs(std::move(exprs)) {}
+
+double funcBlockAST::evaluate(Context& context) {
+    //Context localContext;
+    for (int i = 0;i < exprs.size();i++) {
+        exprs[i]->evaluate(context);
     }
 
     return 1;
@@ -156,7 +168,6 @@ double funcCallAST::evaluate(Context& context)   {
         throw std::runtime_error("Unrecognized Function " + funcName);
     }
         
-
     auto& [allArgs, funcBody] = it->second;
 
     if (args.size() != allArgs.size()) {

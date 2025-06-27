@@ -82,6 +82,14 @@ class blockAST : public ASTNode{
         double evaluate(Context& context)   override;
 };
 
+class funcBlockAST : public ASTNode {
+    std::vector<std::unique_ptr<ASTNode>> exprs;
+
+    public:
+        funcBlockAST(std::vector<std::unique_ptr<ASTNode>> exprs);
+        double evaluate(Context& context)   override;
+};
+
 class funcDefAST : public ASTNode {
     std::string funcName;
     std::vector<std::string> args;

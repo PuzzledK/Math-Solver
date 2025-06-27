@@ -13,6 +13,7 @@ class Parser {
     std::unique_ptr<ASTNode> parseTopLevel();
     std::unique_ptr<ASTNode> parseCondition();
     std::unique_ptr<ASTNode> parseBlock();
+    std::unique_ptr<ASTNode> parseFuncBlock();
     std::unique_ptr<ASTNode> parseExpressionNonCurly(int minPrec = 0);
 
 public:

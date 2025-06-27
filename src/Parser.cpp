@@ -41,10 +41,27 @@ std::unique_ptr<ASTNode> Parser::parseBlock(){
         auto expr = parseExpression();
         exprs.push_back(std::move(expr));
 
+        if (curTok.type == TokenType::RCURLY) break;
+
         eat(TokenType::SEMICOLON);
     }while(curTok.type != TokenType::RCURLY);
 
     return std::make_unique<blockAST>(std::move(exprs));
+}
+
+std::unique_ptr<ASTNode> Parser::parseFuncBlock() {
+
+    std::vector<std::unique_ptr<ASTNode>> exprs;
+    do {
+        auto expr = parseExpressionNonCurly();
+        exprs.push_back(std::move(expr));
+
+        if (curTok.type == TokenType::RCURLY) break;
+
+        eat(TokenType::SEMICOLON);
+    } while (curTok.type != TokenType::RCURLY);
+
+    return std::make_unique<funcBlockAST>(std::move(exprs));
 }
 
 std::unique_ptr<ASTNode> Parser::parseCondition(){
@@ -232,7 +249,7 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
 
         if (curTok.type == TokenType::LCURLY) {
             eat(TokenType::LCURLY);
-            auto e = parseBlock();
+            auto e = parseFuncBlock();
             eat(TokenType::RCURLY);
 
             return std::make_unique<funcDefAST>(std::move(temp.str), std::move(args), std::move(e));
