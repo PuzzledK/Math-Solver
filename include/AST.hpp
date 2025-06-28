@@ -3,28 +3,28 @@
 #include <string>
 #include <vector>
 #include "Context.hpp"
-
+#include "Value.hpp"
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
-    virtual double evaluate(Context &context)   = 0;
+    virtual customType::Value evaluate(Context &context)   = 0;
 };
 
 class numAST : public ASTNode {
     double num;
-public:
-    numAST(double num);
-    double evaluate(Context& context)   override;
-    double get()  ;
+    public:
+        numAST(double num);
+        customType::Value evaluate(Context& context)   override;
+        double get();
 };
 
 class binOpAST : public ASTNode {
     std::unique_ptr<ASTNode> left;
     std::unique_ptr<ASTNode> right;
     char op;
-public:
-    binOpAST(std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right, char op);
-    double evaluate(Context& context)   override;
+    public:
+        binOpAST(std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right, char op);
+        customType::Value evaluate(Context& context)   override;
 };
 
 class mathFuncAST : public ASTNode {
@@ -33,7 +33,7 @@ class mathFuncAST : public ASTNode {
 
     public:
         mathFuncAST(std::string funcName,std::unique_ptr<ASTNode> expr);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class varAST : public ASTNode {
@@ -41,7 +41,7 @@ class varAST : public ASTNode {
     
     public:
         varAST(std::string str);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class varAssignAST : public ASTNode {
@@ -50,7 +50,7 @@ class varAssignAST : public ASTNode {
 
     public:
         varAssignAST(std::string varName, std::unique_ptr<ASTNode> expression);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class ifThenElseAST : public ASTNode{
@@ -61,7 +61,7 @@ class ifThenElseAST : public ASTNode{
     public:
         ifThenElseAST(std::unique_ptr<ASTNode> condition,std::unique_ptr<ASTNode> thenBlock,std::unique_ptr<ASTNode> elseBlock);
 
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class ifCondAST : public ASTNode{
@@ -71,7 +71,7 @@ class ifCondAST : public ASTNode{
 
     public:
         ifCondAST(std::string op,std::unique_ptr<ASTNode> left,std::unique_ptr<ASTNode> right);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class blockAST : public ASTNode{
@@ -79,7 +79,7 @@ class blockAST : public ASTNode{
 
     public:
         blockAST(std::vector<std::unique_ptr<ASTNode>> exprs);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class funcBlockAST : public ASTNode {
@@ -87,7 +87,7 @@ class funcBlockAST : public ASTNode {
 
     public:
         funcBlockAST(std::vector<std::unique_ptr<ASTNode>> exprs);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class funcDefAST : public ASTNode {
@@ -97,7 +97,7 @@ class funcDefAST : public ASTNode {
     
     public:
         funcDefAST(std::string funcName, std::vector<std::string> args, std::unique_ptr<ASTNode> funcBody);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
 };
 
 class funcCallAST : public ASTNode {
@@ -106,5 +106,13 @@ class funcCallAST : public ASTNode {
 
     public:
         funcCallAST(std::string funcName, std::vector<std::unique_ptr<ASTNode>> args);
-        double evaluate(Context& context)   override;
+        customType::Value evaluate(Context& context)   override;
+};
+
+class printAST : public ASTNode{
+    std::unique_ptr<ASTNode> expr;
+
+    public:
+        printAST(std::unique_ptr<ASTNode> expr);
+        customType::Value evaluate(Context& context) override;
 };

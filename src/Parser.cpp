@@ -260,7 +260,16 @@ std::unique_ptr<ASTNode> Parser::parseTopLevel() {
 
             return std::make_unique<funcDefAST>(std::move(temp.str), std::move(args), std::move(e));
         }
-        
+    }
+
+    else if(curTok.type == TokenType::PRINT){
+        eat(TokenType::PRINT);
+
+        eat(TokenType::LBRAC);
+        auto expr = parseExpressionNonCurly();
+        eat(TokenType::RBRAC);
+
+        return std::make_unique<printAST>(std::move(expr));
     }
 
     throw std::runtime_error("Expected number or parenthesis");

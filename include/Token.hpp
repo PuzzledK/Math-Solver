@@ -30,6 +30,7 @@ enum class TokenType {
     LCURLY,RCURLY,
     DEF,COMMA,
     NONE,
+    PRINT,
     END
 };
 

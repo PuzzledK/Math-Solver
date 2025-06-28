@@ -37,6 +37,7 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::RCURLY: return "RCURLY";
         case TokenType::DEF: return "DEF";
         case TokenType::COMMA: return "COMMA";
+        case TokenType::PRINT: return "PRINT";
         default: return "UNKNOWN";        
     }
 }

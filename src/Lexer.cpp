@@ -46,7 +46,8 @@ Token Lexer::parseStr(char c){
     if(str == "if")   return {TokenType::IF,0};
     if(str == "then") return {TokenType::THEN,0};
     if(str == "else") return {TokenType::ELSE,0};
-    if (str == "def")  return { TokenType::DEF,0};
+    if(str == "def")  return { TokenType::DEF,0};
+    if(str == "print") return {TokenType::PRINT,0};
 
     else{
         return {TokenType::VAR,0,str};

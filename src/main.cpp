@@ -3,21 +3,24 @@
 #include "Parser.hpp"
 #include <unordered_map>
 #include "Context.hpp"
+#include "Value.hpp"
 
 int main()
-{   
-    std::cout<<"ENTER ANY SUPPORTED MATHEMATICAL EXPRESSION"<<std::endl;
-    std::cout<<"Type 'help' for supported expressions and 'exit' to quit"<<std::endl;
+{
+    std::cout << "ENTER ANY SUPPORTED MATHEMATICAL EXPRESSION" << std::endl;
+    std::cout << "Type 'help' for supported expressions and 'exit' to quit" << std::endl;
     Context globalContext;
 
     while (true)
     {
-        std::cout<<">>> ";
+        std::cout << ">>> ";
         std::string s;
         std::getline(std::cin, s);
 
-        if(s == "exit") break;
-        if(s == "help"){
+        if (s == "exit")
+            break;
+        if (s == "help")
+        {
             std::cout << "\nSupported commands and features:\n";
             std::cout << "\nOperators:\n";
             std::cout << "  +   Addition\n";
@@ -56,7 +59,12 @@ int main()
             Lexer lexer(s);
             Parser parser(lexer);
             auto result = parser.parse();
-            std::cout << "--> " << result->evaluate(globalContext) << std::endl;
+
+            auto res = result -> evaluate(globalContext);
+            
+            if(res.isNumber()){
+                std::cout << "--> " << res.getNumber()<< std::endl;
+            }
         }
         catch (const std::exception &e)
         {
